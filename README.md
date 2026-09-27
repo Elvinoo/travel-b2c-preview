@@ -10,7 +10,7 @@ Independent B2C travel prototype using Next.js App Router, React and TypeScript.
 
 ## GitHub Pages preview
 
-`.github/workflows/pages.yml` builds and publishes the static site on pushes to `main`. The source repository is private; Pages publication uses the account's supported Pages settings. A public preview does not receive or store travel requests.
+`.github/workflows/pages.yml` builds the static site on pushes to `main`. Its manual run also publishes to Pages when the account supports Pages for this private repository. A public preview does not receive or store travel requests.
 
 The workflow sets `GITHUB_PAGES=true` and `NEXT_PUBLIC_BASE_PATH=/<repository-name>`. Next.js exports `out/` with directory URLs, and `publicAsset` prefixes image/icon paths. Local development keeps its original URLs. The exported files contain only the public website; imported source snapshots and historical photo archives are not part of the Pages artifact.
 
