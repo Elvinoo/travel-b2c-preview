@@ -12,6 +12,7 @@ export type Trip = {
   flexible: boolean;
   adults: number;
   children: number;
+  flights: "" | "yes" | "no";
   interests: string[];
   places: string[];
   stay: string;
@@ -32,6 +33,7 @@ export const initialTrip: Trip = {
   flexible: true,
   adults: 2,
   children: 0,
+  flights: "",
   interests: [],
   places: [],
   stay: "Help me choose",

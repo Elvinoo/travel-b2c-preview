@@ -29,6 +29,7 @@ jobs:
         env:
           GITHUB_PAGES: "true"
           NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
+          NEXT_PUBLIC_AVIASALES_AFFILIATE_URL: ${{ vars.AVIASALES_AFFILIATE_URL }}
       - run: touch out/.nojekyll
       - uses: actions/upload-pages-artifact@v5
         with:

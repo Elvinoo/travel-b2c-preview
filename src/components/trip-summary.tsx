@@ -3,6 +3,8 @@ import { useLocale } from "./locale";
 import { Tour, destinations, countries } from "@/content/catalog";
 import { Trip } from "./trip-state";
 import { TravelImage } from "./travel-image";
+import { FlightSearch, flightPreferenceLabel } from "./flights";
+import { flightCopy } from "@/content/flights";
 import {
   Check,
   ArrowUpRight,
@@ -11,6 +13,7 @@ import {
   CalendarDays,
   Users,
   MapPin,
+  Plane,
 } from "lucide-react";
 export function TripSummary({
   trip,
@@ -82,6 +85,16 @@ export function TripSummary({
                   : "",
               )}
             </span>
+          </div>
+          <button type="button" onClick={() => onEdit(0)}>
+            {r.builder.edit}
+          </button>
+        </div>
+        <div className="summary-line">
+          <Plane size={17} aria-hidden="true" />
+          <div>
+            <small>{tr(flightCopy.summary)}</small>
+            <span>{tr(flightPreferenceLabel(trip.flights))}</span>
           </div>
           <button type="button" onClick={() => onEdit(0)}>
             {r.builder.edit}
@@ -197,6 +210,8 @@ export function RequestComplete({
           </dd>
           <dt>{r.builder.base}</dt>
           <dd>{tr(tour?.title || r.builder.customPlan)}</dd>
+          <dt>{tr(flightCopy.summary)}</dt>
+          <dd>{tr(flightPreferenceLabel(trip.flights))}</dd>
           <dt>{t.builder.selectedPlaces}</dt>
           <dd>
             {tr(selected.map((x) => x.name).join(" · ") || r.builder.nothing)}
@@ -237,6 +252,7 @@ export function RequestComplete({
           </details>
         )}
       </div>
+      {trip.flights === "yes" && <FlightSearch />}
       <div className="completion-actions">
         <button className="back-button" onClick={onEdit}>
           <ArrowLeft size={16} />

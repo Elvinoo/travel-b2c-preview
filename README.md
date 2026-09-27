@@ -41,6 +41,14 @@ The five-stage trip wizard captures dates, adults/children, interests, destinati
 
 Source-based tours show all original days. Each day leads with a consumer title, concise introduction and experience themes; the place tag stays visible, and “See itinerary details” reveals the retained factual programme and overnight information. Requested destination changes and differing trip lengths are flagged for manual route adaptation. Free-form journeys show explicitly illustrative stops. Forms validate contact details, phone digit count, date order, future dates and partial date selections. Completion shows a demo request summary and explains the review/proposal/conversation flow.
 
+## Flight preference and Aviasales
+
+The dates/travellers step asks whether flight tickets are needed, with no preselected answer. The choice remains in the in-memory draft and appears in the sidebar, review and completion preview. Choosing Yes reveals a voluntary Aviasales link that opens in a new tab; No hides it. The tour request remains on this website. Routes, flight dates, passenger ages and counts are selected on Aviasales; no traveller/contact/request information is sent in the link. Airfare and booking are separate from the tour, and no ticket purchase takes place here. All new copy supports the same ten languages.
+
+By default this is an ordinary, untracked `https://www.aviasales.com/` link: it does **not** earn commissions. To activate referral tracking, generate an Aviasales homepage link for this website's project in the Travelpayouts dashboard, then set the public build-time variable `NEXT_PUBLIC_AVIASALES_AFFILIATE_URL` to that exact URL. For GitHub Pages, set the repository Actions variable `AVIASALES_AFFILIATE_URL` and rerun the deployment. Supported HTTPS link hosts are `aviasales.com`, `www.aviasales.com`, `avs.io` and `tp.media`; other hosts/credentials/nonstandard ports fail the build. Never put account credentials or API keys in this variable. A configured referral link shows the commission disclosure and has `rel="sponsored"`. This configuration does not itself create a partner account or guarantee approval, attribution or revenue. Follow [Travelpayouts' official link instructions](https://support.travelpayouts.com/hc/en-us/articles/5711895629714-Aviasales-affiliate-links).
+
+`src/config/flights.ts` owns the destination/referral configuration. `src/content/flights.ts` owns the consumer copy, and `src/components/flights.tsx` owns the choice and external link. No external widget script, live fare API, database or backend was added.
+
 ## Imported content and photographs
 
 The three independently adapted programmes come from the source project's `server/data/tours.json`: id 0 (8 days / 7 nights), id 4 (8 days / 7 nights), id 5 (5 days / 4 nights). Do not mix these day sequences with the differently arranged catalogue export in `scripts/catalogue/programmes-eng.json`.

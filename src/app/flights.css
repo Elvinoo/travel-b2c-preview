@@ -1,0 +1,92 @@
+.flight-preference {
+  min-width: 0;
+  margin: 30px 0 0;
+  padding: 23px;
+  border: 1px solid var(--line);
+  background: #f7f6f0;
+}
+.flight-preference legend {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 0 7px;
+  font-family: Georgia, serif;
+  font-size: 21px;
+  color: var(--primary);
+}
+.flight-preference legend svg {
+  flex-shrink: 0;
+}
+.flight-preference > .form-note {
+  margin: 0 0 17px;
+}
+.flight-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.flight-options label {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 13px;
+  border: 1px solid var(--line);
+  background: var(--paper);
+  cursor: pointer;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--primary);
+}
+.flight-options label.selected {
+  border-color: var(--primary);
+  background: #e9ede3;
+}
+.flight-options input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  margin: 0;
+  padding: 0;
+  flex-shrink: 0;
+  accent-color: var(--primary);
+}
+.flight-options label:focus-within {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.flight-options input[type="radio"]:focus {
+  outline: none;
+}
+.flight-search {
+  margin: 20px 0;
+}
+.flight-link {
+  max-width: 100%;
+  padding: 14px 17px;
+  gap: 12px;
+  text-align: left;
+  white-space: normal;
+}
+.flight-link svg {
+  flex-shrink: 0;
+}
+.flight-search .form-note {
+  max-width: 540px;
+  margin: 12px 0 0;
+  line-height: 1.7;
+}
+.flight-preference .flight-search:last-child {
+  margin-bottom: 0;
+}
+@media (max-width: 600px) {
+  .flight-preference {
+    padding: 17px 13px;
+  }
+  .flight-preference legend {
+    font-size: 19px;
+  }
+  .flight-options {
+    grid-template-columns: 1fr;
+  }
+}

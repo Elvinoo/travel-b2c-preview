@@ -46,6 +46,7 @@ function collect(value, excludeTechnical = false) {
 collect(content("en").en);
 collect(content("refinement").refinement);
 collect(content("interface").interfaceCopy);
+collect(content("flights").flightCopy);
 const catalog = content("catalog");
 for (const name of [
   "destinations",

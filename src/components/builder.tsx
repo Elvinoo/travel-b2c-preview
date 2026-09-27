@@ -7,6 +7,12 @@ import { refinement as validationCopy } from "@/content/refinement";
 import { en as validationMessages } from "@/content/en";
 import { useTrip, initialTrip as initial } from "./trip-state";
 import { TripSummary, RequestComplete } from "./trip-summary";
+import {
+  FlightPreference,
+  FlightSearch,
+  flightPreferenceLabel,
+} from "./flights";
+import { flightCopy } from "@/content/flights";
 import { TravelImage } from "./travel-image";
 import { Itinerary } from "./discovery";
 import {
@@ -366,6 +372,12 @@ export function Builder() {
                     ))}
                   </>
                 )}
+                {step === 0 && (
+                  <FlightPreference
+                    value={trip.flights}
+                    onChange={(value) => update("flights", value)}
+                  />
+                )}
                 {step === 1 && (
                   <>
                     <p className="eyebrow">{t.helpers.steps[1]}</p>
@@ -565,6 +577,10 @@ export function Builder() {
                     )}
                     <div className="review-preferences">
                       <p>
+                        <strong>{tr(flightCopy.summary)}</strong>
+                        {tr(flightPreferenceLabel(trip.flights))}
+                      </p>
+                      <p>
                         <strong>{t.helpers.stay}</strong>
                         {tr(trip.stay)}
                       </p>
@@ -579,6 +595,7 @@ export function Builder() {
                         )}
                       </p>
                     </div>
+                    {trip.flights === "yes" && <FlightSearch />}
                     <p className="form-note">{t.helpers.noBooking}</p>
                   </>
                 )}

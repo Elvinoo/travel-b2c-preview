@@ -5,6 +5,7 @@ import { SiteChrome } from "@/components/site";
 import "./globals.css";
 import "./refinements.css";
 import "./locales.css";
+import "./flights.css";
 export const metadata: Metadata = {
   title: {
     default: `${brand.name} | Thoughtfully personal journeys`,
