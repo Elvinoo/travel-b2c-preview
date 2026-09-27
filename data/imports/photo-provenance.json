@@ -1,0 +1,164 @@
+[
+  {
+    "id": "caucasus",
+    "source": "client-next/public/images/home/Mountain1.jpg",
+    "originalSha256": "7b1de038e54e3c1bf66843e5fc427cf5f64dcdb216f7191571135075e33e31c6",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/caucasus.webp"
+  },
+  {
+    "id": "mountain-walk",
+    "source": "client-next/public/images/home/Trekking3.jpg",
+    "originalSha256": "b3f4da8fd2e7b706d2a74e5d9c7093a5b076157e8c9dc142f99ef428ff429afd",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/mountain-walk.webp"
+  },
+  {
+    "id": "baku-old-city",
+    "source": "client-next/public/images/home/Old City (2).jpg",
+    "originalSha256": "72cfac9f852e9dd2dd8db198a5df94faef250edf17c2072ee8c73d62e45d4ae8",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/baku-old-city.webp"
+  },
+  {
+    "id": "baku-bay",
+    "source": "client-next/public/images/home/Panoramic point flame towers2.jpg",
+    "originalSha256": "ef5a96d914645864a626890517e49aab490750c2c853a0d833f9a4606991e699",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/baku-bay.webp"
+  },
+  {
+    "id": "sheki-palace",
+    "source": "client-next/public/images/home/Sheki Khans Palace2.jpg",
+    "originalSha256": "9bfd0de33c737b2ea8a6da0e0698a5193b36cadb146cbe773b1aff109957401b",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/sheki-palace.webp"
+  },
+  {
+    "id": "sheki-caravanserai",
+    "source": "client-next/public/images/home/Sheki Karvansaray.jpg",
+    "originalSha256": "eecbef668314ed4645a5213e329da5fcdf204d33b61fd10bfbc646d8f7ac72e9",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/sheki-caravanserai.webp"
+  },
+  {
+    "id": "gobustan",
+    "source": "client-next/public/images/home/Gobustan.jpg",
+    "originalSha256": "2d14dc366db6c2debee437a17550cb37abc20eb38ca03b51ec7b9e29afbb72db",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/gobustan.webp"
+  },
+  {
+    "id": "mud-volcanoes",
+    "source": "client-next/public/images/home/MudVolcanoes.jpg",
+    "originalSha256": "82dd54f87b544314cd540d5e0c940d45402564593ff89b698117a4772dd5c6c5",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/mud-volcanoes.webp"
+  },
+  {
+    "id": "fire-temple",
+    "source": "client-next/public/images/home/Ateshgah- Fire Temple.jpg",
+    "originalSha256": "c3345b7992dac5bd7c1244904abca4060f94d946d45140fc365639e2d08c3198",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/fire-temple.webp"
+  },
+  {
+    "id": "yanar-dag",
+    "source": "client-next/public/images/home/Yanardagh2.jpg",
+    "originalSha256": "28be5d410799fd874619c41ca32af2c2d3ea68c866c61ef032fb6d479aa1ff67",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/yanar-dag.webp"
+  },
+  {
+    "id": "heydar-centre",
+    "source": "client-next/public/images/home/Heydar-Aliyav-Center-exterior.jpg",
+    "originalSha256": "db6045bb63e06633519772d3ebfd447464c98f0715f2ce82ffe94f7f8132b68d",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/heydar-centre.webp"
+  },
+  {
+    "id": "carpet-museum",
+    "source": "client-next/public/images/home/CarpetMuseum.jpg",
+    "originalSha256": "84fa23085091013212912dccd473aa35d7efedd055e029b9659c721a8043647f",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/carpet-museum.webp"
+  },
+  {
+    "id": "shah-plov",
+    "source": "client-next/public/images/home/Shah Plov.jpg",
+    "originalSha256": "2a65418ed324e3d774d2da56d648d5ca2342e0017b4ac66c003719058138a48f",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/shah-plov.webp"
+  },
+  {
+    "id": "goygol-church",
+    "source": "client-next/public/images/home/St. John's Church, Goygol.jpg",
+    "originalSha256": "23179c19b99d0643930b628e97fcbd5e6356cfd70b02687e6a615559165c619c",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/goygol-church.webp"
+  },
+  {
+    "id": "ganja",
+    "source": "client-next/public/images/home/Shah Abbas Mosque Ganja.jpg",
+    "originalSha256": "6d4ab4f0a0739f5ea2703ccc20a6f80afc97e7c0702e6702f4e120e1a473c684",
+    "width": 2400,
+    "height": 1301,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/ganja.webp"
+  },
+  {
+    "id": "candy-mountains",
+    "source": "client-next/public/images/home/CandyCane.jpg",
+    "originalSha256": "5681033157e0d7cff11bf3021206d6dafee3995d02c2e457ca0acbb624bb1eb0",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/candy-mountains.webp"
+  },
+  {
+    "id": "kish",
+    "source": "client-next/public/images/home/KishTemplke.jpg",
+    "originalSha256": "6c32dd0bbccbbda16f05786ce10c9bb840df6a84a65785e8c60726eb5017a293",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/kish.webp"
+  },
+  {
+    "id": "diri-baba",
+    "source": "client-next/public/images/home/diri baba.jpg",
+    "originalSha256": "a71895bc4fe467f1931ed19a715c099b2a3ceb402bdd48b87a0b90a39813a777",
+    "width": 2400,
+    "height": 1300,
+    "rights": "User-provided existing project photography; source provenance retained. Verify publication rights before production launch.",
+    "archive": "data/imports/source-photography/diri-baba.webp"
+  }
+]
