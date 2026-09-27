@@ -1,5 +1,6 @@
 "use client";
-import Link from "next/link";
+import { useLocale } from "./locale";
+import Link from "./local-link";
 import { useEffect, useId, useRef, useState } from "react";
 import { b2cAsset } from "@/content/photography";
 import {
@@ -17,8 +18,6 @@ import {
   MessagesSquare,
   Route,
 } from "lucide-react";
-import { en as t } from "@/content/en";
-import { refinement as r } from "@/content/refinement";
 import {
   destinations,
   tours,
@@ -30,6 +29,7 @@ import { TravelImage } from "./travel-image";
 import { CTA, DestinationCards, TourCards } from "./site";
 
 export function FeaturedJourneys() {
+  const { t, r, tr, unit } = useLocale();
   const collection = tours.filter((x) => x.visible);
   const featured = collection[0];
   return (
@@ -46,17 +46,18 @@ export function FeaturedJourneys() {
         <div className="signature-copy">
           <div className="tour-meta">
             <span>
-              {featured.duration} {t.ui.days} / {featured.nights} {r.nights}
+              {featured.duration} {unit("day", featured.duration)} /{" "}
+              {featured.nights} {unit("night", featured.nights)}
             </span>
-            <span>{featured.style}</span>
+            <span>{tr(featured.style)}</span>
           </div>
           <Link href={`/tours/${featured.id}`}>
-            <h3>{featured.title}</h3>
+            <h3>{tr(featured.title)}</h3>
           </Link>
-          <p>{featured.description}</p>
+          <p>{tr(featured.description)}</p>
           <div className="journey-route">
             <MapPin size={14} />
-            {featured.places}
+            {tr(featured.places)}
           </div>
           <Link className="text-link" href={`/tours/${featured.id}`}>
             {r.view}
@@ -79,12 +80,12 @@ export function FeaturedJourneys() {
             </Link>
             <div>
               <p className="eyebrow">
-                {x.style} · {x.duration} {t.ui.days}
+                {tr(x.style)} · {x.duration} {unit("day", x.duration)}
               </p>
               <Link href={`/tours/${x.id}`}>
-                <h3>{x.title}</h3>
+                <h3>{tr(x.title)}</h3>
               </Link>
-              <p>{x.description}</p>
+              <p>{tr(x.description)}</p>
               <Link className="text-link" href={`/tours/${x.id}`}>
                 {r.view}
                 <ArrowUpRight size={15} />
@@ -104,6 +105,7 @@ export function ExperienceCards({
   all?: boolean;
   selected?: string[];
 }) {
+  const { t, r, tr, unit } = useLocale();
   const collection = selected
     ? experiences.filter((x) => selected.includes(x.name))
     : all
@@ -119,15 +121,15 @@ export function ExperienceCards({
           >
             <TravelImage src={x.image} alt={x.name} role="experience" />
             <span className="experience-index">
-              {String(i + 1).padStart(2, "0")}
+              {tr(String(i + 1).padStart(2, "0"))}
             </span>
             <span className="round-arrow">
               <ArrowUpRight size={20} />
             </span>
           </Link>
           <div>
-            <h3>{x.name}</h3>
-            <p>{x.description}</p>
+            <h3>{tr(x.name)}</h3>
+            <p>{tr(x.description)}</p>
             <Link
               className="experience-add"
               href={`/build-your-trip?interest=${encodeURIComponent(x.name)}`}
@@ -150,7 +152,7 @@ export function ExperienceCards({
                   .slice(0, 1)
                   .map((d) => (
                     <Link key={d.id} href={`/destinations/${d.id}`}>
-                      {d.name}
+                      {tr(d.name)}
                       <ArrowUpRight size={12} />
                     </Link>
                   ))}
@@ -164,6 +166,7 @@ export function ExperienceCards({
 }
 
 export function RefinedHome() {
+  const { t, r, tr, unit } = useLocale();
   return (
     <>
       <section className="hero refined-hero">
@@ -202,9 +205,9 @@ export function RefinedHome() {
           />
           <span>
             <small>
-              FROM OLD CITY LANES
+              {tr("FROM OLD CITY LANES")}
               <br />
-              TO OPEN MOUNTAIN SKIES
+              {tr("TO OPEN MOUNTAIN SKIES")}
             </small>
             <ArrowUpRight size={18} />
           </span>
@@ -292,8 +295,8 @@ export function RefinedHome() {
             <div className="how-step" key={x.title}>
               <span>0{i + 1}</span>
               <div>
-                <h3>{x.title}</h3>
-                <p>{x.text}</p>
+                <h3>{tr(x.title)}</h3>
+                <p>{tr(x.text)}</p>
               </div>
               <ArrowUpRight size={19} />
             </div>
@@ -339,8 +342,8 @@ export function RefinedHome() {
             return (
               <article key={x.title}>
                 <Icon size={25} strokeWidth={1.3} />
-                <h3>{x.title}</h3>
-                <p>{x.text}</p>
+                <h3>{tr(x.title)}</h3>
+                <p>{tr(x.text)}</p>
               </article>
             );
           })}
@@ -362,6 +365,7 @@ export function Itinerary({
   days: ItineraryDay[];
   compact?: boolean;
 }) {
+  const { t, r, tr, unit } = useLocale();
   const [open, setOpen] = useState<number[]>([]);
   const itineraryId = useId();
   return (
@@ -374,7 +378,7 @@ export function Itinerary({
           key={d.day}
         >
           <span className="timeline-node">
-            {String(d.day).padStart(2, "0")}
+            {tr(String(d.day).padStart(2, "0"))}
           </span>
           <div className="itinerary-day-card">
             <div className="day-experience">
@@ -385,11 +389,11 @@ export function Itinerary({
                 <span className="eyebrow">
                   {t.helpers.day} {d.day}
                 </span>
-                <h3>{d.title}</h3>
-                <p className="day-intro">{d.intro}</p>
+                <h3>{tr(d.title)}</h3>
+                <p className="day-intro">{tr(d.intro)}</p>
                 <div className="day-themes">
                   {d.themes.map((theme) => (
-                    <span key={theme}>{theme}</span>
+                    <span key={theme}>{tr(theme)}</span>
                   ))}
                 </div>
               </div>
@@ -397,7 +401,7 @@ export function Itinerary({
             <div className="day-context">
               <span className="day-location">
                 <MapPin size={12} />
-                {d.location}
+                {tr(d.location)}
               </span>
               <button
                 className="day-toggle day-detail-toggle"
@@ -413,7 +417,7 @@ export function Itinerary({
                   )
                 }
               >
-                {open.includes(d.day) ? r.hideDayDetails : r.dayDetails}
+                {tr(open.includes(d.day) ? r.hideDayDetails : r.dayDetails)}
                 <ChevronDown className="day-chevron" size={15} />
               </button>
             </div>
@@ -424,18 +428,18 @@ export function Itinerary({
             >
               <span className="day-activity">
                 <Footprints size={13} />
-                {d.activity}
+                {tr(d.activity)}
               </span>
-              <p>{d.description}</p>
+              <p>{tr(d.description)}</p>
               <div className="day-highlights">
                 {d.highlights.map((x) => (
-                  <span key={x}>{x}</span>
+                  <span key={x}>{tr(x)}</span>
                 ))}
               </div>
               {d.overnight !== "—" && (
                 <p className="overnight-note">
                   <Moon size={13} />
-                  {r.overnight}: {d.overnight}
+                  {r.overnight}: {tr(d.overnight)}
                 </p>
               )}
             </div>
@@ -453,6 +457,7 @@ export function Gallery({
   photos: string[];
   title: string;
 }) {
+  const { t, tr, unit } = useLocale();
   const [active, setActive] = useState(0);
   const ref = useRef<HTMLDialogElement>(null);
   return (
@@ -462,7 +467,7 @@ export function Gallery({
           <button
             type="button"
             key={`${p}-${i}`}
-            aria-label={`Open ${title} photo ${i + 1}`}
+            aria-label={`${tr("Open photo")} ${i + 1} · ${tr(title)}`}
             onClick={() => {
               setActive(i);
               ref.current?.showModal();
@@ -503,7 +508,7 @@ export function Gallery({
         <div className="gallery-controls">
           <button
             type="button"
-            aria-label="Previous photo"
+            aria-label={tr("Previous photo")}
             onClick={() =>
               setActive((i) => (i - 1 + photos.length) % photos.length)
             }
@@ -515,7 +520,7 @@ export function Gallery({
           </span>
           <button
             type="button"
-            aria-label="Next photo"
+            aria-label={tr("Next photo")}
             onClick={() => setActive((i) => (i + 1) % photos.length)}
           >
             <ChevronRight />
@@ -527,6 +532,7 @@ export function Gallery({
 }
 
 export function TourDetail({ id }: { id: string }) {
+  const { t, r, tr, unit } = useLocale();
   const tour = tours.find((x) => x.id === id && x.visible);
   if (!tour) return null;
   return (
@@ -545,11 +551,11 @@ export function TourDetail({ id }: { id: string }) {
             ← {t.nav.tours}
           </Link>
           <p className="eyebrow">
-            {tour.style} · {tour.duration} {t.ui.days} / {tour.nights}{" "}
-            {r.nights}
+            {tr(tour.style)} · {tour.duration} {unit("day", tour.duration)} /{" "}
+            {tour.nights} {unit("night", tour.nights)}
           </p>
-          <h1>{tour.title}</h1>
-          <p>{tour.description}</p>
+          <h1>{tr(tour.title)}</h1>
+          <p>{tr(tour.description)}</p>
           <div className="detail-hero-buttons">
             <Link className="button light" href={`/build-your-trip?tour=${id}`}>
               {r.customize}
@@ -569,16 +575,17 @@ export function TourDetail({ id }: { id: string }) {
         <div>
           <small>{r.duration}</small>
           <strong>
-            {tour.duration} {t.ui.days} / {tour.nights} {r.nights}
+            {tour.duration} {unit("day", tour.duration)} / {tour.nights}{" "}
+            {unit("night", tour.nights)}
           </strong>
         </div>
         <div>
           <small>{r.route}</small>
-          <strong>{tour.places}</strong>
+          <strong>{tr(tour.places)}</strong>
         </div>
         <div>
           <small>{r.style}</small>
-          <strong>{tour.style}</strong>
+          <strong>{tr(tour.style)}</strong>
         </div>
       </div>
       <section className="section wrap tour-detail-layout">
@@ -586,12 +593,12 @@ export function TourDetail({ id }: { id: string }) {
           <div className="tour-introduction">
             <p className="eyebrow">{r.signature}</p>
             <h2>{r.highlights}</h2>
-            <p>{tour.introduction}</p>
+            <p>{tr(tour.introduction)}</p>
             <div className="highlight-list">
               {tour.highlights.map((x) => (
                 <p key={x}>
                   <Check size={16} />
-                  {x}
+                  {tr(x)}
                 </p>
               ))}
             </div>
@@ -611,7 +618,9 @@ export function TourDetail({ id }: { id: string }) {
           />
           <div>
             <p className="eyebrow">{t.builder.label}</p>
-            <h3>{tour.duration} days. Your way.</h3>
+            <h3>
+              {tour.duration} {tr("days. Your way.")}
+            </h3>
             <p>{r.noPayment}</p>
             <Link className="button" href={`/build-your-trip?tour=${id}`}>
               {r.customize}
@@ -638,7 +647,7 @@ export function TourDetail({ id }: { id: string }) {
         <div>
           <p className="eyebrow">{t.builder.accommodation}</p>
           <h2>{r.stay}</h2>
-          <p>{tour.stay}</p>
+          <p>{tr(tour.stay)}</p>
           <Link className="text-link" href={`/build-your-trip?tour=${id}`}>
             {r.customize}
             <ArrowUpRight size={16} />
@@ -649,7 +658,7 @@ export function TourDetail({ id }: { id: string }) {
           {tour.practical.map((x, i) => (
             <p className="practical-item" key={x}>
               <span>0{i + 1}</span>
-              {x}
+              {tr(x)}
             </p>
           ))}
         </div>
@@ -666,6 +675,7 @@ export function TourDetail({ id }: { id: string }) {
 }
 
 export function DestinationDetail({ id }: { id: string }) {
+  const { t, r, tr, unit } = useLocale();
   const destination = destinations.find((x) => x.id === id);
   if (!destination) return null;
   const related = tours.filter((x) => x.visible && x.destinations.includes(id));
@@ -683,9 +693,9 @@ export function DestinationDetail({ id }: { id: string }) {
           <Link className="detail-back" href="/destinations">
             ← {t.nav.destinations}
           </Link>
-          <p className="eyebrow">{destination.tag}</p>
-          <h1>{destination.name}</h1>
-          <p>{destination.description}</p>
+          <p className="eyebrow">{tr(destination.tag)}</p>
+          <h1>{tr(destination.name)}</h1>
+          <p>{tr(destination.description)}</p>
           <Link
             className="button light"
             href={`/build-your-trip?destination=${id}`}
@@ -698,9 +708,9 @@ export function DestinationDetail({ id }: { id: string }) {
       <section className="section wrap destination-why">
         <div>
           <p className="eyebrow">{r.destinationWhy}</p>
-          <h2>{destination.description}</h2>
+          <h2>{tr(destination.description)}</h2>
         </div>
-        <p>{destination.why}</p>
+        <p>{tr(destination.why)}</p>
       </section>
       <section className="wrap destination-stories">
         {destination.discover.map((x, i) => (
@@ -710,8 +720,8 @@ export function DestinationDetail({ id }: { id: string }) {
               <p className="eyebrow">
                 0{i + 1} / {r.places}
               </p>
-              <h2>{x.title}</h2>
-              <p>{x.text}</p>
+              <h2>{tr(x.title)}</h2>
+              <p>{tr(x.text)}</p>
               <Link
                 className="text-link"
                 href={`/build-your-trip?destination=${id}`}
@@ -748,9 +758,9 @@ export function DestinationDetail({ id }: { id: string }) {
                   <TravelImage src={x.image} alt={x.title} />
                   <div>
                     <p className="eyebrow">
-                      {x.duration} {t.ui.days} · {x.style}
+                      {x.duration} {unit("day", x.duration)} · {tr(x.style)}
                     </p>
-                    <h3>{x.title}</h3>
+                    <h3>{tr(x.title)}</h3>
                     <span className="text-link">
                       {r.view}
                       <ArrowUpRight size={16} />
@@ -771,6 +781,7 @@ export function DestinationDetail({ id }: { id: string }) {
 }
 
 export function ExperiencesPage() {
+  const { r, unit } = useLocale();
   return (
     <>
       <section className="page-intro wrap">

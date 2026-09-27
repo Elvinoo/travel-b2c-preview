@@ -4,6 +4,7 @@ import { publicAsset } from "@/config/paths";
 import { SiteChrome } from "@/components/site";
 import "./globals.css";
 import "./refinements.css";
+import "./locales.css";
 export const metadata: Metadata = {
   title: {
     default: `${brand.name} | Thoughtfully personal journeys`,

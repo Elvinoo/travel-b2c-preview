@@ -1,0 +1,76 @@
+.language-picker {
+  flex-shrink: 0;
+  gap: 5px;
+  flex-direction: row;
+  align-items: center;
+  margin: 0;
+}
+.language-picker select {
+  background: transparent;
+  color: var(--primary);
+  border: 0;
+  border-radius: 0;
+  width: 89px;
+  min-height: 36px;
+  padding: 6px 0;
+  font: inherit;
+  cursor: pointer;
+}
+.language-picker select:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 3px;
+}
+.language-picker select:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+html:not(:lang(en)) h1,
+html:not(:lang(en)) h2,
+html:not(:lang(en)) h3 {
+  overflow-wrap: anywhere;
+}
+html:lang(zh) .eyebrow,
+html:lang(ja) .eyebrow,
+html:lang(zh) .hero-kicker,
+html:lang(ja) .hero-kicker {
+  letter-spacing: 0.06em;
+}
+html:lang(zh) h1,
+html:lang(ja) h1 {
+  letter-spacing: 0;
+}
+@media (min-width: 761px) {
+  html:not(:lang(en)) .header {
+    gap: 18px;
+  }
+  html:not(:lang(en)) .navigation {
+    gap: clamp(10px, 1.4vw, 24px);
+    font-size: 11px;
+  }
+  html:not(:lang(en)) .header-actions {
+    gap: 14px;
+  }
+}
+@media (min-width: 761px) and (max-width: 1180px) {
+  html:not(:lang(en)) .header-build {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .language-picker select {
+    width: 76px;
+    min-height: 44px;
+  }
+  html:not(:lang(en)) .hero h1 {
+    font-size: clamp(36px, 10vw, 46px);
+  }
+  html:not(:lang(en)) .hero-buttons .button {
+    max-width: 100%;
+  }
+  html:not(:lang(en)) .wizard-topline strong {
+    overflow-wrap: anywhere;
+  }
+  html:not(:lang(en)) .day-context {
+    align-items: flex-start;
+  }
+}

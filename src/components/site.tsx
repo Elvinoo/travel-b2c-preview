@@ -1,5 +1,7 @@
 "use client";
-import Link from "next/link";
+import { useLocale, LocaleProvider, LanguagePicker } from "./locale";
+import { useLocalizedValidation } from "./form-language";
+import Link from "./local-link";
 import { InterestLinks } from "./interest-links";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -7,7 +9,6 @@ import { TripProvider } from "./trip-state";
 import { RefinedHome, TourDetail, DestinationDetail } from "./discovery";
 import { TravelImage } from "./travel-image";
 import { photographyNote } from "@/content/photography";
-import { refinement as r } from "@/content/refinement";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -21,7 +22,6 @@ import {
 } from "lucide-react";
 import { brand } from "@/config/brand";
 import { publicAsset } from "@/config/paths";
-import { en as t } from "@/content/en";
 import {
   destinations,
   tours,
@@ -29,9 +29,50 @@ import {
   countries,
   interests,
 } from "@/content/catalog";
-export function SiteChrome({ children }: { children: React.ReactNode }) {
+function SiteChromeContent({ children }: { children: React.ReactNode }) {
+  const { t, tr, locale, unit } = useLocale();
   const [open, setOpen] = useState(false);
   const path = usePathname();
+  useEffect(() => {
+    const section = path.split("/").filter(Boolean);
+    const base = process.env.NEXT_PUBLIC_BASE_PATH?.replace(/^\//, "");
+    if (base && section[0] === base) section.shift();
+    const route = section[0];
+    const names: Record<string, string> = {
+      destinations: t.nav.destinations,
+      tours: t.nav.tours,
+      experiences: t.nav.experiences,
+      about: t.nav.about,
+      contact: t.nav.contact,
+      "build-your-trip": t.nav.build,
+      privacy: t.footer.privacy,
+    };
+    const title =
+      route === "tours" && section[1]
+        ? tr(tours.find((tour) => tour.id === section[1])?.title || names.tours)
+        : route === "destinations" && section[1]
+          ? tr(
+              destinations.find((destination) => destination.id === section[1])
+                ?.name || names.destinations,
+            )
+          : names[route] || t.hero.title.replace(/\n/g, " ");
+    const pageTitle =
+      !route && locale === "en"
+        ? `${brand.name} | Thoughtfully personal journeys`
+        : `${title} | ${brand.name}`;
+    const syncTitle = () => {
+      if (document.title !== pageTitle) document.title = pageTitle;
+    };
+    syncTitle();
+    // Static Next metadata can arrive after a client-side language change.
+    const observer = new MutationObserver(syncTitle);
+    observer.observe(document.head, {
+      subtree: true,
+      childList: true,
+      characterData: true,
+    });
+    return () => observer.disconnect();
+  }, [path, t, tr, locale]);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") setOpen(false);
@@ -78,7 +119,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
               }
               onClick={() => setOpen(false)}
             >
-              {label}
+              {tr(label)}
             </Link>
           ))}
           <Link
@@ -91,9 +132,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
           </Link>
         </nav>
         <div className="header-actions">
-          <span className="language" title={t.helpers.language}>
-            <Globe2 size={16} /> EN
-          </span>
+          <LanguagePicker />
           <Link className="button header-build" href="/build-your-trip">
             {t.nav.build}
             <ArrowUpRight size={16} />
@@ -115,6 +154,7 @@ export function SiteChrome({ children }: { children: React.ReactNode }) {
   );
 }
 export function CTA() {
+  const { t, r, unit } = useLocale();
   return (
     <section className="cta wrap">
       <div>
@@ -131,6 +171,7 @@ export function CTA() {
   );
 }
 function Footer() {
+  const { t, tr, unit } = useLocale();
   return (
     <footer className="footer wrap">
       <div className="footer-top">
@@ -156,21 +197,21 @@ function Footer() {
           {brand.phone && <a href={`tel:${brand.phone}`}>{brand.phone}</a>}
           {Object.entries(brand.social).map(([name, url]) => (
             <a key={name} href={url}>
-              {name}
+              {tr(name)}
             </a>
           ))}
         </div>
         <div className="footer-note">
           <p>{t.footer.note}</p>
           <span>{t.footer.prototype}</span>
-          <small className="photography-note">{photographyNote}</small>
+          <small className="photography-note">{tr(photographyNote)}</small>
         </div>
       </div>
       <div className="footer-bottom">
         <span>
           © {new Date().getFullYear()} {brand.name}. {t.footer.rights}
         </span>
-        <span>{brand.legal}</span>
+        <span>{tr(brand.legal)}</span>
         <Link href="/privacy">
           {t.footer.privacy}
           <ArrowUpRight size={12} />
@@ -180,6 +221,7 @@ function Footer() {
   );
 }
 export function DestinationCards({ all = false }: { all?: boolean }) {
+  const { tr, unit } = useLocale();
   return (
     <div className="destination-grid">
       {destinations.slice(0, all ? destinations.length : 3).map((d, i) => (
@@ -192,8 +234,8 @@ export function DestinationCards({ all = false }: { all?: boolean }) {
           <div className="image-shade" />
           <span className="destination-number">0{i + 1}</span>
           <div className="destination-copy">
-            <span className="eyebrow">{d.tag}</span>
-            <h3>{d.name}</h3>
+            <span className="eyebrow">{tr(d.tag)}</span>
+            <h3>{tr(d.name)}</h3>
             <span className="round-arrow">
               <ArrowUpRight size={22} />
             </span>
@@ -204,13 +246,14 @@ export function DestinationCards({ all = false }: { all?: boolean }) {
   );
 }
 export function TourCards({ filter = "All journeys" }: { filter?: string }) {
+  const { t, r, tr, unit } = useLocale();
   return (
     <div className="tour-grid">
       {tours
         .filter(
           (x) =>
             x.visible &&
-            (filter === t.ui.all ||
+            (filter === "All journeys" ||
               x.style === filter ||
               x.interests.includes(filter)),
         )
@@ -218,19 +261,19 @@ export function TourCards({ filter = "All journeys" }: { filter?: string }) {
           <Link className="tour-card" key={tour.id} href={`/tours/${tour.id}`}>
             <div className="tour-image">
               <TravelImage src={tour.image} alt={tour.title} role="journey" />
-              <span className="image-tag">{tour.style}</span>
+              <span className="image-tag">{tr(tour.style)}</span>
               <span className="tour-save">
                 <ArrowUpRight size={20} />
               </span>
             </div>
             <div className="tour-meta">
               <span>
-                {tour.duration} {t.ui.days}
+                {tour.duration} {unit("day", tour.duration)}
               </span>
-              <span>{tour.places}</span>
+              <span>{tr(tour.places)}</span>
             </div>
-            <h3>{tour.title}</h3>
-            <p>{tour.description}</p>
+            <h3>{tr(tour.title)}</h3>
+            <p>{tr(tour.description)}</p>
             <span className="text-link">
               {r.view}
               <ArrowUpRight size={15} />
@@ -244,7 +287,8 @@ export function Home() {
   return <RefinedHome />;
 }
 export function Listing({ kind }: { kind: "destinations" | "tours" }) {
-  const [filter, setFilter] = useState(t.ui.all);
+  const { t, tr, unit } = useLocale();
+  const [filter, setFilter] = useState("All journeys");
   useEffect(() => {
     const requested = new URLSearchParams(window.location.search).get(
       "interest",
@@ -255,15 +299,15 @@ export function Listing({ kind }: { kind: "destinations" | "tours" }) {
   return (
     <>
       <section className="page-intro wrap">
-        <p className="eyebrow">{copy.label}</p>
-        <h1>{copy.title}</h1>
-        <p>{copy.text}</p>
+        <p className="eyebrow">{tr(copy.label)}</p>
+        <h1>{tr(copy.title)}</h1>
+        <p>{tr(copy.text)}</p>
       </section>
       <section className="wrap listing">
         {kind === "destinations" ? (
           <>
             <div className="listing-label">
-              <span>{countries[0].name}</span>
+              <span>{tr(countries[0].name)}</span>
               <span>{t.helpers.firstChapter}</span>
             </div>
             <DestinationCards all />
@@ -275,7 +319,7 @@ export function Listing({ kind }: { kind: "destinations" | "tours" }) {
                   .map((x, i) => (
                     <span className="future-country" key={x.id}>
                       {i > 0 && <span>·</span>}
-                      {x.name}
+                      {tr(x.name)}
                     </span>
                   ))}
               </p>
@@ -286,9 +330,9 @@ export function Listing({ kind }: { kind: "destinations" | "tours" }) {
           </>
         ) : (
           <>
-            <div className="filters" aria-label="Filter journeys">
+            <div className="filters" aria-label={tr("Filter journeys")}>
               {[
-                t.ui.all,
+                "All journeys",
                 ...new Set(tours.filter((x) => x.visible).map((x) => x.style)),
                 "Nature",
                 ...(interests.includes(filter) &&
@@ -304,7 +348,7 @@ export function Listing({ kind }: { kind: "destinations" | "tours" }) {
                   onClick={() => setFilter(x)}
                   key={x}
                 >
-                  {x}
+                  {tr(x)}
                 </button>
               ))}
             </div>
@@ -317,6 +361,7 @@ export function Listing({ kind }: { kind: "destinations" | "tours" }) {
   );
 }
 export function About() {
+  const { t, tr, unit } = useLocale();
   return (
     <>
       <section className="page-intro wrap">
@@ -338,8 +383,8 @@ export function About() {
           {t.about.values.map((x, i) => (
             <article key={x.title}>
               <span className="eyebrow">0{i + 1}</span>
-              <h3>{x.title}</h3>
-              <p>{x.text}</p>
+              <h3>{tr(x.title)}</h3>
+              <p>{tr(x.text)}</p>
             </article>
           ))}
         </div>
@@ -349,6 +394,8 @@ export function About() {
   );
 }
 export function Contact() {
+  const validation = useLocalizedValidation();
+  const { t, unit } = useLocale();
   const [sent, setSent] = useState(false);
   return (
     <>
@@ -359,6 +406,7 @@ export function Contact() {
       </section>
       <section className="contact-layout wrap">
         <form
+          {...validation}
           onSubmit={(e) => {
             e.preventDefault();
             setSent(true);
@@ -427,5 +475,13 @@ export function Detail({
     <TourDetail id={id} />
   ) : (
     <DestinationDetail id={id} />
+  );
+}
+
+export function SiteChrome({ children }: { children: React.ReactNode }) {
+  return (
+    <LocaleProvider>
+      <SiteChromeContent>{children}</SiteChromeContent>
+    </LocaleProvider>
   );
 }

@@ -2,7 +2,7 @@ export const helpers = {
   experienceHeading: "FOLLOW WHAT MOVES YOU",
   skip: "Skip to content",
   navLabel: "Main navigation",
-  language: "English — additional languages can be added",
+  language: "Choose language",
   scroll: "Scroll to discover",
   scrollText: "SCROLL TO DISCOVER",
   editorial: "A world closer\nthan you think.",

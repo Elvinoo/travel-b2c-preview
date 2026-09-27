@@ -1,4 +1,6 @@
+"use client";
 import { CSSProperties } from "react";
+import { useLocale } from "./locale";
 import { getB2CPhoto } from "@/content/photography";
 import { publicAsset } from "@/config/paths";
 export type ImageRole =
@@ -33,6 +35,7 @@ export function TravelImage({
   position?: string;
   className?: string;
 }) {
+  const { tr } = useLocale();
   const photo = getB2CPhoto(src);
   return (
     <img
@@ -44,7 +47,7 @@ export function TravelImage({
           : undefined
       }
       sizes={imageRules[role].sizes}
-      alt={alt === "" ? "" : photo?.alt || alt}
+      alt={alt === "" ? "" : tr(photo?.alt || alt)}
       loading={priority ? "eager" : "lazy"}
       fetchPriority={priority ? "high" : "auto"}
       decoding="async"

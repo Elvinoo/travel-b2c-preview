@@ -1,7 +1,6 @@
 "use client";
+import { useLocale } from "./locale";
 import { Tour, destinations, countries } from "@/content/catalog";
-import { en as t } from "@/content/en";
-import { refinement as r } from "@/content/refinement";
 import { Trip } from "./trip-state";
 import { TravelImage } from "./travel-image";
 import {
@@ -22,6 +21,7 @@ export function TripSummary({
   tour?: Tour;
   onEdit: (step: number) => void;
 }) {
+  const { t, r, tr, unit } = useLocale();
   const selected = trip.places.flatMap((id) =>
     destinations.filter((x) => x.id === id),
   );
@@ -39,11 +39,11 @@ export function TripSummary({
           src={tour?.image || selected[0]?.image || destinations[2].image}
           alt={tour?.title || selected[0]?.name || destinations[2].alt}
         />
-        <span>{countryNames}</span>
+        <span>{tr(countryNames)}</span>
       </div>
       <div className="summary-body">
         <p className="eyebrow">{t.builder.summary}</p>
-        <h3>{tour?.title || r.builder.customPlan}</h3>
+        <h3>{tr(tour?.title || r.builder.customPlan)}</h3>
         {tour && (
           <p className="summary-source">
             {tour.duration} {r.builder.sourceDays}
@@ -54,11 +54,13 @@ export function TripSummary({
           <div>
             <small>{t.builder.timing}</small>
             <span>
-              {trip.start && trip.end
-                ? `${trip.start} → ${trip.end}`
-                : trip.flexible
-                  ? t.builder.flexibleTiming
-                  : t.builder.unspecified}
+              {tr(
+                trip.start && trip.end
+                  ? `${trip.start} → ${trip.end}`
+                  : trip.flexible
+                    ? t.builder.flexibleTiming
+                    : t.builder.unspecified,
+              )}
             </span>
             {trip.flexible && trip.start && trip.end && (
               <small>{r.builder.dateFlexible}</small>
@@ -73,8 +75,12 @@ export function TripSummary({
           <div>
             <small>{t.helpers.travellers}</small>
             <span>
-              {trip.adults} {t.helpers.adultUnit}
-              {trip.children ? `, ${trip.children} ${t.helpers.childUnit}` : ""}
+              {trip.adults} {unit("adult", trip.adults)}
+              {tr(
+                trip.children
+                  ? `, ${trip.children} ${unit("child", trip.children)}`
+                  : "",
+              )}
             </span>
           </div>
           <button type="button" onClick={() => onEdit(0)}>
@@ -89,7 +95,7 @@ export function TripSummary({
         </div>
         <div className="summary-tags">
           {trip.interests.length ? (
-            trip.interests.map((x) => <span key={x}>{x}</span>)
+            trip.interests.map((x) => <span key={x}>{tr(x)}</span>)
           ) : (
             <p>{r.builder.nothing}</p>
           )}
@@ -101,13 +107,13 @@ export function TripSummary({
           </button>
         </div>
         <p className="summary-places">
-          {selected.map((x) => x.name).join(" · ") || r.builder.nothing}
+          {tr(selected.map((x) => x.name).join(" · ") || r.builder.nothing)}
         </p>
         <div className="summary-preferences">
-          <span>{trip.stay}</span>
-          <span>{trip.transport}</span>
+          <span>{tr(trip.stay)}</span>
+          <span>{tr(trip.transport)}</span>
           {trip.activities.map((x) => (
-            <span key={x}>{x}</span>
+            <span key={x}>{tr(x)}</span>
           ))}
         </div>
         <div className="summary-note">
@@ -129,6 +135,7 @@ export function RequestComplete({
   onEdit: () => void;
   onRestart: () => void;
 }) {
+  const { t, r, tr, unit } = useLocale();
   const selected = trip.places.flatMap((id) =>
     destinations.filter((x) => x.id === id),
   );
@@ -146,8 +153,8 @@ export function RequestComplete({
           <article key={x.title}>
             <span>0{i + 1}</span>
             <div>
-              <h4>{x.title}</h4>
-              <p>{x.text}</p>
+              <h4>{tr(x.title)}</h4>
+              <p>{tr(x.text)}</p>
             </div>
           </article>
         ))}
@@ -167,33 +174,41 @@ export function RequestComplete({
           </dd>
           <dt>{t.builder.timing}</dt>
           <dd>
-            {trip.start && trip.end
-              ? `${trip.start} → ${trip.end}`
-              : t.builder.flexibleTiming}
-            {trip.flexible &&
-              trip.start &&
-              trip.end &&
-              ` · ${t.builder.flexible}`}
+            {tr(
+              trip.start && trip.end
+                ? `${trip.start} → ${trip.end}`
+                : t.builder.flexibleTiming,
+            )}
+            {tr(
+              trip.flexible &&
+                trip.start &&
+                trip.end &&
+                ` · ${t.builder.flexible}`,
+            )}
           </dd>
           <dt>{t.helpers.travellers}</dt>
           <dd>
-            {trip.adults} {t.helpers.adultUnit}
-            {trip.children ? `, ${trip.children} ${t.helpers.childUnit}` : ""}
+            {trip.adults} {unit("adult", trip.adults)}
+            {tr(
+              trip.children
+                ? `, ${trip.children} ${unit("child", trip.children)}`
+                : "",
+            )}
           </dd>
           <dt>{r.builder.base}</dt>
-          <dd>{tour?.title || r.builder.customPlan}</dd>
+          <dd>{tr(tour?.title || r.builder.customPlan)}</dd>
           <dt>{t.builder.selectedPlaces}</dt>
           <dd>
-            {selected.map((x) => x.name).join(" · ") || r.builder.nothing}
+            {tr(selected.map((x) => x.name).join(" · ") || r.builder.nothing)}
           </dd>
           <dt>{t.builder.interests}</dt>
-          <dd>{trip.interests.join(", ") || r.builder.nothing}</dd>
+          <dd>{tr(trip.interests.join(", ") || r.builder.nothing)}</dd>
           <dt>{t.helpers.stay}</dt>
-          <dd>{trip.stay}</dd>
+          <dd>{tr(trip.stay)}</dd>
           <dt>{t.helpers.transport}</dt>
-          <dd>{trip.transport}</dd>
+          <dd>{tr(trip.transport)}</dd>
           <dt>{t.helpers.experiences}</dt>
-          <dd>{trip.activities.join(", ") || r.builder.nothing}</dd>
+          <dd>{tr(trip.activities.join(", ") || r.builder.nothing)}</dd>
           {trip.notes && (
             <>
               <dt>{t.builder.notes}</dt>
@@ -206,7 +221,7 @@ export function RequestComplete({
             <summary>
               {r.builder.submittedItinerary}
               <span>
-                {tour.duration} {t.ui.days}
+                {tour.duration} {unit("day", tour.duration)}
               </span>
             </summary>
             <ol>
@@ -215,7 +230,7 @@ export function RequestComplete({
                   <strong>
                     {t.helpers.day} {d.day}
                   </strong>
-                  {d.title}
+                  {tr(d.title)}
                 </li>
               ))}
             </ol>

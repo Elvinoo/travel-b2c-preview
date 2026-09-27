@@ -206,6 +206,3 @@ export const en = {
   },
 };
 export type Messages = typeof en;
-export const locales: Record<string, { label: string; messages: Messages }> = {
-  en: { label: "English", messages: en },
-};

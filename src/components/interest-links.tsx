@@ -1,4 +1,6 @@
-import Link from "next/link";
+"use client";
+import { useLocale } from "./locale";
+import Link from "./local-link";
 import {
   Landmark,
   Mountain,
@@ -8,7 +10,6 @@ import {
   Camera,
   ArrowUpRight,
 } from "lucide-react";
-import { en as t } from "@/content/en";
 import { interests } from "@/content/catalog";
 
 const collection = [
@@ -21,6 +22,7 @@ const collection = [
 ];
 
 export function InterestLinks() {
+  const { t, tr } = useLocale();
   return (
     <div className="experience-links">
       <p className="eyebrow">{t.helpers.experienceHeading}</p>
@@ -31,7 +33,7 @@ export function InterestLinks() {
             href={`/build-your-trip?interest=${encodeURIComponent(interests[index])}`}
           >
             <Icon size={22} strokeWidth={1.3} />
-            <span>{interests[index]}</span>
+            <span>{tr(interests[index])}</span>
             <ArrowUpRight size={13} />
           </Link>
         ))}

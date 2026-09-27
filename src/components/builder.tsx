@@ -1,11 +1,14 @@
 "use client";
+import { useLocale } from "./locale";
+import { useLocalizedValidation } from "./form-language";
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
+import { refinement as validationCopy } from "@/content/refinement";
+import { en as validationMessages } from "@/content/en";
 import { useTrip, initialTrip as initial } from "./trip-state";
 import { TripSummary, RequestComplete } from "./trip-summary";
 import { TravelImage } from "./travel-image";
 import { Itinerary } from "./discovery";
-import { refinement as r } from "@/content/refinement";
 import {
   ArrowUpRight,
   ArrowRight,
@@ -31,7 +34,6 @@ import {
   X,
   ChevronDown,
 } from "lucide-react";
-import { en as t } from "@/content/en";
 import {
   destinations,
   tours,
@@ -55,8 +57,13 @@ const icons = [
   Globe2,
 ];
 export function Builder() {
+  const validation = useLocalizedValidation();
+  const { t, r, tr, unit } = useLocale();
   const { step, setStep, trip, setTrip, visited, setVisited } = useTrip();
-  const query = useSearchParams().toString();
+  const searchParams = useSearchParams();
+  const canonicalQuery = new URLSearchParams(searchParams.toString());
+  canonicalQuery.delete("lang");
+  const query = canonicalQuery.toString();
   const lastQuery = useRef<string | null>(null);
   const summaryDialog = useRef<HTMLDialogElement>(null);
   const tour = tours.find((x) => x.id === trip.tourId);
@@ -132,10 +139,11 @@ export function Builder() {
       (!trip.flexible || trip.start || trip.end) &&
       (!trip.start || !trip.end)
     )
-      return r.builder.chooseDates;
-    if (trip.start && trip.start < localToday) return r.builder.pastDate;
+      return validationCopy.builder.chooseDates;
+    if (trip.start && trip.start < localToday)
+      return validationCopy.builder.pastDate;
     if (trip.start && trip.end && trip.end < trip.start)
-      return t.helpers.orderError;
+      return validationMessages.helpers.orderError;
     return "";
   }
   const selected = trip.places.flatMap((id) =>
@@ -168,7 +176,7 @@ export function Builder() {
           <div className="builder-origin">
             <MapPin size={14} />
             <span>
-              {r.builder.tourStart}: <strong>{tour.title}</strong>
+              {r.builder.tourStart}: <strong>{tr(tour.title)}</strong>
             </span>
             <button type="button" onClick={() => update("tourId", "")}>
               {r.builder.clearTour}
@@ -240,11 +248,12 @@ export function Builder() {
                     <span>
                       {i <= visited && i !== step ? <Check size={13} /> : i + 1}
                     </span>
-                    <small>{s}</small>
+                    <small>{tr(s)}</small>
                   </button>
                 ))}
               </div>
               <form
+                {...validation}
                 onSubmit={(e) => {
                   e.preventDefault();
                   if (step < 4) next();
@@ -254,11 +263,11 @@ export function Builder() {
                       !trip.last.trim() ||
                       !trip.country.trim()
                     ) {
-                      setError(r.builder.nameError);
+                      setError(validationCopy.builder.nameError);
                       return;
                     }
                     if (trip.phone.replace(/\D/g, "").length < 7) {
-                      setError(r.builder.phoneError);
+                      setError(validationCopy.builder.phoneError);
                       return;
                     }
                     const datesError = validateDates();
@@ -319,24 +328,34 @@ export function Builder() {
                         <span>
                           {t.builder[key]}
                           <small>
-                            {key === "adults"
-                              ? t.helpers.adultsAge
-                              : t.helpers.childrenAge}
+                            {tr(
+                              key === "adults"
+                                ? t.helpers.adultsAge
+                                : t.helpers.childrenAge,
+                            )}
                           </small>
                         </span>
                         <div>
                           <button
                             type="button"
-                            aria-label={`Remove one ${key}`}
+                            aria-label={tr(
+                              key === "adults"
+                                ? "Remove one adult"
+                                : "Remove one child",
+                            )}
                             disabled={trip[key] <= (key === "adults" ? 1 : 0)}
                             onClick={() => update(key, trip[key] - 1)}
                           >
                             <Minus size={16} />
                           </button>
-                          <span aria-live="polite">{trip[key]}</span>
+                          <span aria-live="polite">{tr(trip[key])}</span>
                           <button
                             type="button"
-                            aria-label={`Add one ${key}`}
+                            aria-label={tr(
+                              key === "adults"
+                                ? "Add one adult"
+                                : "Add one child",
+                            )}
                             disabled={trip[key] >= 20}
                             onClick={() => update(key, trip[key] + 1)}
                           >
@@ -356,7 +375,7 @@ export function Builder() {
                     </p>
                     <p className="selection-status" aria-live="polite">
                       <Check size={14} />
-                      {trip.interests.length} {r.builder.selected} ·{" "}
+                      {r.builder.selected}: {trip.interests.length} ·{" "}
                       {r.builder.saved}
                     </p>
                     <div className="interest-grid">
@@ -375,7 +394,7 @@ export function Builder() {
                             onClick={() => toggle("interests", x)}
                           >
                             <Icon size={24} strokeWidth={1.3} />
-                            <span>{x}</span>
+                            <span>{tr(x)}</span>
                             {trip.interests.includes(x) && (
                               <Check size={14} className="choice-check" />
                             )}
@@ -392,7 +411,7 @@ export function Builder() {
                     <p className="step-description">{t.builder.placesText}</p>
                     <p className="selection-status" aria-live="polite">
                       <MapPin size={14} />
-                      {trip.places.length} {r.builder.selected}
+                      {r.builder.selected}: {trip.places.length}
                     </p>
                     <div className="place-choices">
                       {destinations.map((d) => (
@@ -412,7 +431,7 @@ export function Builder() {
                             alt=""
                             role="destination"
                           />
-                          <span>{d.name}</span>
+                          <span>{tr(d.name)}</span>
                           <span className="place-check">
                             {trip.places.includes(d.id) ? (
                               <Check size={15} />
@@ -433,7 +452,7 @@ export function Builder() {
                           key={x}
                           onClick={() => update("stay", x)}
                         >
-                          {x}
+                          {tr(x)}
                         </button>
                       ))}
                     </div>
@@ -450,7 +469,7 @@ export function Builder() {
                           key={x}
                           onClick={() => toggle("activities", x)}
                         >
-                          {x}
+                          {tr(x)}
                         </button>
                       ))}
                     </div>
@@ -461,7 +480,9 @@ export function Builder() {
                       onChange={(e) => update("transport", e.target.value)}
                     >
                       {transport.map((x) => (
-                        <option key={x}>{x}</option>
+                        <option key={x} value={x}>
+                          {tr(x)}
+                        </option>
                       ))}
                     </select>
                   </>
@@ -477,9 +498,10 @@ export function Builder() {
                           <TravelImage src={tour.image} alt={tour.title} />
                           <div>
                             <p className="eyebrow">{r.builder.tourStart}</p>
-                            <h3>{tour.title}</h3>
+                            <h3>{tr(tour.title)}</h3>
                             <span>
-                              {tour.duration} {t.ui.days} · {tour.places}
+                              {tour.duration} {unit("day", tour.duration)} ·{" "}
+                              {tr(tour.places)}
                             </span>
                           </div>
                         </div>
@@ -494,23 +516,27 @@ export function Builder() {
                             <p>{r.builder.adjustmentText}</p>
                             <p>
                               {r.builder.added}:{" "}
-                              {selected
-                                .filter(
-                                  (x) => !tour.destinations.includes(x.id),
-                                )
-                                .map((x) => x.name)
-                                .join(", ") || "—"}
+                              {tr(
+                                selected
+                                  .filter(
+                                    (x) => !tour.destinations.includes(x.id),
+                                  )
+                                  .map((x) => x.name)
+                                  .join(", ") || "—",
+                              )}
                             </p>
                             <p>
                               {r.builder.removed}:{" "}
-                              {destinations
-                                .filter(
-                                  (x) =>
-                                    tour.destinations.includes(x.id) &&
-                                    !trip.places.includes(x.id),
-                                )
-                                .map((x) => x.name)
-                                .join(", ") || "—"}
+                              {tr(
+                                destinations
+                                  .filter(
+                                    (x) =>
+                                      tour.destinations.includes(x.id) &&
+                                      !trip.places.includes(x.id),
+                                  )
+                                  .map((x) => x.name)
+                                  .join(", ") || "—",
+                              )}
                             </p>
                           </div>
                         )}
@@ -529,7 +555,7 @@ export function Builder() {
                               <span>
                                 {t.helpers.day} {x.day}
                               </span>
-                              <h3>{x.title}</h3>
+                              <h3>{tr(x.title)}</h3>
                               <p>{t.helpers.pace}</p>
                             </div>
                           ))}
@@ -540,15 +566,17 @@ export function Builder() {
                     <div className="review-preferences">
                       <p>
                         <strong>{t.helpers.stay}</strong>
-                        {trip.stay}
+                        {tr(trip.stay)}
                       </p>
                       <p>
                         <strong>{t.helpers.transport}</strong>
-                        {trip.transport}
+                        {tr(trip.transport)}
                       </p>
                       <p>
                         <strong>{t.helpers.experiences}</strong>
-                        {trip.activities.join(", ") || t.builder.unspecified}
+                        {tr(
+                          trip.activities.join(", ") || t.builder.unspecified,
+                        )}
                       </p>
                     </div>
                     <p className="form-note">{t.helpers.noBooking}</p>
@@ -615,7 +643,7 @@ export function Builder() {
                 )}
                 {error && (
                   <p role="alert" className="error-message">
-                    {error}
+                    {tr(error)}
                   </p>
                 )}
                 <div className="wizard-actions">
@@ -635,7 +663,7 @@ export function Builder() {
                     <span className="form-note">{t.helpers.durationHint}</span>
                   )}
                   <button className="button" type="submit">
-                    {step === 4 ? r.send : t.builder.next}
+                    {tr(step === 4 ? r.send : t.builder.next)}
                     <ArrowRight size={17} />
                   </button>
                 </div>
